@@ -35,6 +35,7 @@ make check
 * [`bandit` AST based security scanner](https://bandit.readthedocs.io/en/latest/)
 * [`vulture` Find dead Python code](https://github.com/jendrikseipp/vulture)
 * [`refurb` A tool for refurbishing and modernizing Python codebases](https://github.com/dosisod/refurb)
+* [`ty`An extremely fast Python type checker and language server](https://docs.astral.sh/ty/)
 
 You can uncomment `interrogate` to check for docstring coverage, but the `uv init` stubs don't pass this
 * #[`interrogate` Interrogate a codebase for docstring coverage](https://interrogate.readthedocs.io/en/latest/) (commented out)

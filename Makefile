@@ -8,20 +8,24 @@ help:
 	@echo "  make init       Initialize new project with uv and test setup"
 
 check:
-	uv run ruff check src/ --fix                    # https://docs.astral.sh/ruff/
-	uv run ruff format src/ --check	                # An extremely fast Python linter and code formatter
+	@echo "\n— [An extremely fast Python linter and code formatter](https://docs.astral.sh/ruff/)"
+	uv run ruff check src/ --fix
+	uv run ruff format src/ --check
 
-	uv run bandit -c pyproject.toml -r src/         # https://bandit.readthedocs.io/en/latest/
-	                                                # AST based security scanner
+	@echo "\n— [AST based security scanner](https://bandit.readthedocs.io/en/latest/)"
+	uv run bandit -c pyproject.toml -r src/
 
-	uv run vulture src/ --min-confidence 80         # https://github.com/jendrikseipp/vulture
-	                                                # Find dead Python code
+	@echo "\n— [Find dead Python code](https://github.com/jendrikseipp/vulture)"
+	uv run vulture src/ --min-confidence 80
 
-	uv run refurb src/                              # https://github.com/dosisod/refurb
-	                                                # A tool for refurbishing and modernizing Python codebases
+	@echo "\n— [A tool for refurbishing and modernizing Python codebases](https://github.com/dosisod/refurb)"
+	uv run refurb src/
 
-	#uv run interrogate src/                        # https://interrogate.readthedocs.io/en/latest/
-	                                                # Interrogate a codebase for docstring coverage.
+	@echo "\n— [An extremely fast Python type checker and language server]( https://docs.astral.sh/ty/)"
+	uv run ty check src/
+
+	@echo "\n— [Interrogate a codebase for docstring coverage](https://interrogate.readthedocs.io/en/latest/)"
+	#uv run interrogate src/
 
 test: check
 	uv run pytest -v --durations=5
@@ -34,7 +38,7 @@ clean:
 init: pyproject.toml testpackages
 
 testpackages:
-	uv add --dev ruff bandit vulture refurb pytest #interrogate
+	uv add --dev ruff bandit vulture refurb ty pytest #interrogate
 
 export GIT_CEILING_DIRECTORIES	# can influence `uv init` behaviour
 pyproject.toml:
