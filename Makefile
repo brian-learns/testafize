@@ -1,4 +1,4 @@
-.PHONY: help check test clean
+.PHONY: help check test clean testpackages
 
 help:
 	@echo ""
@@ -8,7 +8,7 @@ help:
 	@echo "  make init       Initialize new project with uv and test setup"
 
 check:
-	uv run ruff check src/ --fi                     # https://docs.astral.sh/ruff/
+	uv run ruff check src/ --fix                    # https://docs.astral.sh/ruff/
 	uv run ruff format src/ --check	                # An extremely fast Python linter and code formatter
 
 	uv run bandit -c pyproject.toml -r src/         # https://bandit.readthedocs.io/en/latest/
@@ -31,9 +31,11 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
-init: pyproject.toml
+init: pyproject.toml testpackages
+
+testpackages:
+	uv add --dev ruff bandit vulture refurb pytest #interrogate
 
 export GIT_CEILING_DIRECTORIES	# can influence `uv init` behaviour
 pyproject.toml:
 	uv init --package .
-	uv add --dev ruff bandit vulture refurb pytest #interrogate

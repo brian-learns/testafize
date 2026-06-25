@@ -1,7 +1,10 @@
 # testafize
 boot strap a new project or migrate an old one into modern uv setup with tests
 
-## Start a new project
+## Initialize Test Suite
+
+### New Project
+
 ```bash
 mkdir newproject
 cd newproject/
@@ -14,3 +17,12 @@ the last command outputs
 ```
 Hello from newproject!
 ```
+
+### Existing Project
+
+```bash
+wget -q https://raw.githubusercontent.com/brian-learns/testafize/main/Makefile
+make init
+make check
+```
+

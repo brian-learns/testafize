@@ -1,0 +1,4 @@
+test/*
+!test/Makefile
+!test/clean.sh
+!test/test.sh
