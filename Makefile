@@ -1,4 +1,6 @@
-.PHONY: help check test clean testpackages
+REQUIRED_EXECUTABLES = uv rm find
+
+.PHONY: help check test clean testpackages checkdeps
 
 help:
 	@echo ""
@@ -35,7 +37,12 @@ clean:
 	find . -type d -name "__pycache__" -exec rm -rf {} +
 	find . -type f -name "*.pyc" -delete
 
-init: pyproject.toml testpackages
+init: checkdeps pyproject.toml testpackages
+
+checkdeps:
+	@$(foreach exec,$(REQUIRED_EXECUTABLES),\
+		command -v $(exec) >/dev/null 2>&1 || { echo "Error: $(exec) is required."; exit 1; };)
+	@echo "All required commands are available."
 
 testpackages:
 	uv add --dev ruff bandit vulture refurb ty pytest #interrogate
