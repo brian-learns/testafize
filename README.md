@@ -13,13 +13,36 @@ mkdir newproject
 cd newproject/
 wget -q https://raw.githubusercontent.com/brian-learns/testafize/main/Makefile
 make init
-make check
-uv run newproject
 ```
-the last command outputs
-```
+
+Then you will have stub python project set up with uv and static tests installed.
+```bash
+$ uv run newproject
 Hello from newproject!
+$ tree -a -I .venv/ -I .git/
+.
+├── .gitignore
+├── Makefile
+├── pyproject.toml
+├── .python-version
+├── README.md
+├── src
+│   └── newproject
+│       └── __init__.py
+└── uv.lock
+
+3 directories, 7 files
 ```
+Then you can run 
+```
+make check
+```
+to run the static tests.  There is also a stub to run pytest.
+
+```
+make test # will fail because there are no tests yet
+```
+
 
 ### Existing Project
 
