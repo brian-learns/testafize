@@ -13,6 +13,7 @@ mkdir newproject
 cd newproject/
 wget -q https://raw.githubusercontent.com/brian-learns/testafize/main/Makefile
 make init
+curl https://raw.githubusercontent.com/brian-learns/testafize/main/pyproject_tool.toml >> pyproject.toml
 ```
 
 Then you will have stub python project set up with uv and static tests installed.
