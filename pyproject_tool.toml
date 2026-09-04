@@ -28,3 +28,6 @@ ignore-module = true
 
 [tool.ty]
 rules = { all = "error" }
+
+[tool.uv]
+exclude-newer = "7 days"

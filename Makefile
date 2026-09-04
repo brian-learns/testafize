@@ -29,6 +29,9 @@ check:
 	@echo "\n— [Interrogate a codebase for docstring coverage](https://interrogate.readthedocs.io/en/latest/)"
 	#uv run interrogate src/
 
+	@echo "\n— security scan"
+	UV_MALWARE_CHECK=1 uv audit --preview-features audit-command --preview-features malware-check
+
 test: check
 	uv run pytest -v --durations=5
 
