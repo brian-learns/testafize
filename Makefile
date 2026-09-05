@@ -48,7 +48,7 @@ checkdeps:
 	@echo "All required commands are available."
 
 testpackages:
-	uv add --dev ruff bandit vulture refurb ty pytest #interrogate
+	uv add --exclude-newer "7 days" --dev ruff bandit vulture refurb ty pytest #interrogate
 
 export GIT_CEILING_DIRECTORIES	# can influence `uv init` behaviour
 pyproject.toml:
