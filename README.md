@@ -53,6 +53,10 @@ make init
 make check
 ```
 
+`make init` skips `uv init` if `pyproject.toml` already exists and only adds the dev tools. To get the tool configuration, merge `pyproject_tool.toml` in by hand — do not append it, duplicate `[tool.*]` tables break every tool.
+
+If the project sits inside an outer git repo (e.g. `~/.git` at the home root), `uv init` won't write a local `.gitignore`. Override with `GIT_CEILING_DIRECTORIES=$HOME make init` (the value must be an ancestor of the project dir).
+
 ## Analysis and Linting
 
 * [`ruff` An extremely fast Python linter and code formatter](https://docs.astral.sh/ruff/)

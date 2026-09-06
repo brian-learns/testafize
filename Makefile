@@ -1,17 +1,23 @@
 REQUIRED_EXECUTABLES = uv rm find
+MIN_UV_VERSION = 0.12
 
-.PHONY: help check test clean testpackages checkdeps
+.PHONY: help check test clean testpackages checkdeps format
 
 help:
 	@echo ""
 	@echo "  make check      Run ultra-fast static testing pipeline (ruff, bandit, vulture, etc.)"
+	@echo "  make format     Auto-fix lint issues and format src/ with ruff"
 	@echo "  make test       Run static checks followed immediately by pytest"
 	@echo "  make clean      Wipe out test tool cache tracking footprints"
 	@echo "  make init       Initialize new project with uv and test setup"
 
 check:
+	@echo "\n— lockfile consistency"
+	# same exclude-newer window as `testpackages`, so the re-resolution matches how the lock was written
+	uv lock --check --exclude-newer "7 days"
+
 	@echo "\n— [An extremely fast Python linter and code formatter](https://docs.astral.sh/ruff/)"
-	uv run ruff check src/ --fix
+	uv run ruff check src/
 	uv run ruff format src/ --check
 
 	@echo "\n— [AST based security scanner](https://bandit.readthedocs.io/en/latest/)"
@@ -32,6 +38,10 @@ check:
 	@echo "\n— security scan"
 	UV_MALWARE_CHECK=1 uv audit --preview-features audit-command --preview-features malware-check
 
+format:
+	uv run ruff format src/
+	uv run ruff check src/ --fix
+
 test: check
 	uv run pytest -v --durations=5
 
@@ -45,11 +55,15 @@ init: checkdeps pyproject.toml testpackages
 checkdeps:
 	@$(foreach exec,$(REQUIRED_EXECUTABLES),\
 		command -v $(exec) >/dev/null 2>&1 || { echo "Error: $(exec) is required."; exit 1; };)
+	@uvv=$$(uv --version | awk '{print $$2}'); \
+	awk -v v="$$uvv" -v min="$(MIN_UV_VERSION)" \
+		'BEGIN{split(v,a,".");split(min,b,".");exit !(a[1]+0>b[1]+0||(a[1]+0==b[1]+0&&a[2]+0>=b[2]+0))}' \
+		|| { echo "Error: uv >= $(MIN_UV_VERSION) is required (found $$uvv)."; exit 1; }
 	@echo "All required commands are available."
 
 testpackages:
 	uv add --exclude-newer "7 days" --dev ruff bandit vulture refurb ty pytest #interrogate
 
-export GIT_CEILING_DIRECTORIES	# can influence `uv init` behaviour
+export GIT_CEILING_DIRECTORIES	# pass-through so users can override `uv init` git-repo detection (e.g. GIT_CEILING_DIRECTORIES=$HOME when ~/.git exists); must be an ancestor of the project dir
 pyproject.toml:
 	uv init --package .

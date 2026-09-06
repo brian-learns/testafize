@@ -12,9 +12,4 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )" # http://stackoverflow.c
   make check
   uv run "$(basename "$PWD")"
 
-status=$?
-if [ $status -eq 0 ]; then
-    echo -e "\033[32m[PASS] Test succeeded!\033[0m"
-else
-    echo -e "\033[31m[FAIL] Test failed with exit code $status\033[0m"
-fi
+echo "[PASS] Test succeeded!"  # errexit above guarantees failures exit before this
